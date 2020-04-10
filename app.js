@@ -1,49 +1,38 @@
-const express = require("express");
-const morgan = require("morgan");
+const app = require("express")();
 const mongoose = require("mongoose");
-const session = require("express-session");
-const MongoDBStore = require("connect-mongodb-session")(session);
 require("dotenv/config");
 
-const { bindUserWithReqest } = require("./middleware/authMiddleware");
-const setLoals = require("./middleware/setLocals");
+const setRoutes = require("./routes/routes");
+const middleware = require("./middleware/middleware");
 
-const app = express();
-
-// * mongoDb session
-var store = new MongoDBStore({
-  uri: process.env.DATABASE,
-  collection: "sessions",
-  expires: 1000 * 60 * 60 * 2,
-});
+middleware(app);
 
 // * ejs setup
 app.set("view engine", "ejs");
 app.set("views", "views");
 
-// * Middleware Setup
-const middleware = [
-  morgan("dev"),
-  express.static("public"),
-  express.urlencoded({ extended: true }),
-  express.json(),
-  session({
-    secret: process.env.SECRET_KEY || "SECRET_KEY",
-    resave: false,
-    saveUninitialized: false,
-    store: store,
-  }),
-  bindUserWithReqest(),
-  setLoals(),
-];
-app.use(middleware);
-
 // * Router Setap
-const authRoute = require("./routes/authRoute");
-app.use("/auth", authRoute);
+setRoutes(app);
 
-const deshboard = require("./routes/deshBoardRoute");
-app.use("/", deshboard);
+app.use((req, res, next) => {
+  let error = new Error("404 Page Not Found");
+  error.status = 404;
+  next(error);
+});
+
+app.use((error, req, res, next) => {
+  if (error.status === 404) {
+    return res.render("error/404", {
+      title: "404 Not found",
+      flashMessage: {},
+    });
+  }
+  console.log(error);
+  res.render("error/500", {
+    title: "Internal Server Error",
+    flashMessage: {},
+  });
+});
 
 const PORT = process.env.PORT || 5000;
 
