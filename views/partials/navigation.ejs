@@ -16,10 +16,15 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="#"
+          <a class="nav-link" href="/"
             >Deshbords <span class="sr-only">(current)</span></a
           >
         </li>
+        <% if(isLoggedIn){ %>
+        <li class="nav-item">
+          <a class="nav-link" href="/auth/logout">Logout</a>
+        </li>
+        <% }else{ %>
         <li class="nav-item">
           <a class="nav-link" href="/auth/login">Login</a>
         </li>
@@ -27,6 +32,7 @@
         <li class="nav-item">
           <a class="nav-link" href="/auth/signup">Signup</a>
         </li>
+        <% } %>
       </ul>
       <form class="form-inline my-2 my-lg-0">
         <input

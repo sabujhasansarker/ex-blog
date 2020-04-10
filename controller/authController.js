@@ -41,32 +41,54 @@ exports.signupPostController = async (req, res, next) => {
     next();
   }
 };
+
 exports.loginGetController = (req, res, next) => {
   res.render("pages/auth/login", { title: "Login Your account", error: {} });
+  console.log(req.session.isLoggedIn, req.session.user);
 };
+
 exports.loginPostController = async (req, res, next) => {
   const { email, password } = req.body;
   let error = validationResult(req).formatWith(errorFormetter);
+
   if (!error.isEmpty()) {
     return res.render("pages/auth/login", {
       title: "Login Your account",
       error: error.mapped(),
     });
   }
+
   try {
     const user = await User.findOne({ email });
     if (!user) {
       res.json({ message: "Invalid Credential" });
     }
+
     const matchPassword = await bcrypt.compare(password, user.password);
     if (!matchPassword) {
       res.json({ message: "Invalid Credential" });
     }
-    console.log("Successfully Logged in ", user);
-    res.render("pages/auth/login", { title: "Login Your account" });
+
+    req.session.isLoggedIn = true;
+    req.session.user = user;
+    req.session.save((err) => {
+      if (err) {
+        console.log(err);
+        return next(err);
+      }
+      res.redirect("/");
+    });
   } catch (error) {
     console.log(error);
     next();
   }
 };
-exports.logoutController = (req, res, next) => {};
+exports.logoutController = (req, res, next) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.log(err);
+      return next();
+    }
+    return res.redirect("/auth/login");
+  });
+};
