@@ -1,14 +1,31 @@
 const authRoute = require("./authRoute");
 const deshboard = require("./deshBoardRoute");
+const uplode = require("./uploadeRoute");
+const post = require("./postRoute");
+
+const playground = require("./playground");
 
 const routes = [
   {
     path: "/auth",
     hendler: authRoute,
   },
+
   {
-    path: "/",
+    path: "/deshboard",
     hendler: deshboard,
+  },
+  {
+    path: "/uploads",
+    hendler: uplode,
+  },
+  {
+    path: "/posts",
+    hendler: post,
+  },
+  {
+    path: "/playground",
+    hendler: playground,
   },
 ];
 

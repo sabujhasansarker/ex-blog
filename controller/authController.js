@@ -22,7 +22,7 @@ exports.signupPostController = async (req, res, next) => {
   const { username, email, password } = req.body;
 
   let error = validationResult(req).formatWith(errorFormetter);
-
+  console.log(error);
   if (!error.isEmpty()) {
     req.flash("fail", "Please Check your form");
     return res.render("pages/auth/signup", {
@@ -103,7 +103,7 @@ exports.loginPostController = async (req, res, next) => {
         return next(err);
       }
       req.flash("success", "Successfully Logged In");
-      res.redirect("/");
+      res.redirect("/deshboard");
     });
   } catch (error) {
     next();

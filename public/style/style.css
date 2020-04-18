@@ -23,3 +23,7 @@ footer p {
 .my-container {
   min-height: 83.3vh;
 }
+
+img#profilePics {
+  max-width: 40%;
+}
