@@ -12,7 +12,7 @@ const {
 const { isAuthenticated } = require("../middleware/authMiddleware");
 
 const postValidation = require("../validator/dashboard/post/postValidation");
-const uploade = require("../middleware/uploadMiddeware");
+const upload = require("../middleware/uploadMiddeware");
 
 router.get("/create", isAuthenticated, createPostGetController);
 router.get("/edit/:postId", isAuthenticated, editPostGetController);
@@ -20,14 +20,14 @@ router.get("/delete/:postId", isAuthenticated, getDeletePostGetController);
 router.post(
   "/create",
   isAuthenticated,
-  uploade.single("thumbnail"),
+  upload.single("post-thumbnail"),
   postValidation,
   createPostPostController
 );
 router.post(
   "/edit/:postId",
   isAuthenticated,
-  uploade.single("thumbnail"),
+  upload.single("post-thumbnail"),
   postValidation,
   editGetPostController
 );

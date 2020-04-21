@@ -12,7 +12,7 @@ exports.bookmarkGetController = async (req, res, next) => {
     let bookmarks = null;
     const profile = await Profile.findOne({ user: userId });
 
-    if (profile.bookmarks.include(userId)) {
+    if (profile.bookmarks.includes(postId)) {
       await Profile.findOneAndUpdate(
         { user: userId },
         { $pull: { "bookmarks": postId } }

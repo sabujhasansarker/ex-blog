@@ -8,32 +8,34 @@ exports.likesGetController = async (req, res, next) => {
       error: "Your are not an anthenticated user",
     });
   }
+
+  let userId = req.user._id;
+  let liked = null;
   try {
-    let userId = req.user._id;
-    let liked = null;
     let post = await Post.findById(postId);
 
     if (post.dislikes.includes(userId)) {
       await Post.findOneAndUpdate(
         { _id: postId },
-        { $pull: { dislikes: userId } }
+        { $pull: { 'dislikes': userId } }
       );
     }
 
     if (post.likes.includes(userId)) {
       await Post.findOneAndUpdate(
         { _id: postId },
-        { $pull: { likes: userId } }
+        { $pull: { 'likes': userId } }
       );
       liked = false;
     } else {
       await Post.findOneAndUpdate(
         { _id: postId },
-        { $pull: { likes: userId } }
+        { $push: { 'likes': userId } }
       );
       liked = true;
     }
     let updatePost = await Post.findById(postId);
+    console.log(updatePost)
     res.status(200).json({
       liked,
       totalLikes: updatePost.likes.length,
@@ -62,20 +64,20 @@ exports.getDislikeController = async (req, res, next) => {
     if (post.likes.includes(userId)) {
       await Post.findOneAndUpdate(
         { _id: postId },
-        { $pull: { likes: userId } }
+        { $pull: { 'likes': userId } }
       );
     }
 
     if (post.dislikes.includes(userId)) {
       await Post.findOneAndUpdate(
         { _id: postId },
-        { $pull: { dislikes: userId } }
+        { $pull: { 'dislikes': userId } }
       );
       disliked = false;
     } else {
       await Post.findOneAndUpdate(
         { _id: postId },
-        { $pull: { dislikes: userId } }
+        { $push: { 'dislikes': userId } }
       );
       disliked = true;
     }

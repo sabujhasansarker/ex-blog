@@ -6,11 +6,11 @@ exports.uploadProfilePics = async (req, res, next) => {
   if (req.file) {
     try {
       let oldProfilePics = req.user.profilePics;
-      const profile = await Profile.findOne({ user: req.user._id });
-      const profilePics = `/uploads/${req.file.filename}`;
+      let profile = await Profile.findOne({ user: req.user._id });
+      let profilePics = `/uploads/${req.file.filename}`;
       if (profile) {
-        await Profile.findByIdAndUpdate(
-          { _id: req.user._id },
+        await Profile.findOneAndUpdate(
+          { user: req.user._id },
           { $set: { profilePics } }
         );
       }
@@ -37,7 +37,6 @@ exports.uploadProfilePics = async (req, res, next) => {
     }
   } else {
     res.status(500).json({
-      message: "error",
       profilePics: req.user.profilePics,
     });
   }
@@ -73,7 +72,7 @@ exports.removeProfilePics = (req, res, next) => {
   }
 };
 
-exports.postImageUploadCondtroller = (req, res, next) => {
+exports.postImageUploadController = (req, res, next) => {
   if (req.file) {
     return res.status(200).json({
       imgUrl: `/uploads/${req.file.filename}`,
