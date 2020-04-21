@@ -10,6 +10,7 @@ window.onload = function () {
     tinycomments_author: "Author name",
     height: 400,
     automatic_uploads: true,
+    relative_urls: false,
     images_upload_url: "/uploads/postimage",
     images_upload_handler: function (blobInfo, success, failure) {
       let headers = new Headers();

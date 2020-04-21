@@ -2,19 +2,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.css">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-2">
-          <%- include('../../../partials/sideBar.ejs') %>
-        </div>
+        <div class="col-md-2"></div>
         <div class="col-md-10 my-5">
           <div class="mx-5 card card-body mx-5 py-5">
-           <form action="/posts/create" method="post">
+           <form action="/posts/edit/<%= post._id %> " method="post">
             <div class="form-group">
               <label for="title">Enter your post title</label>
                 <input
                 type="text"
                 name="title"
                 class="form-control <%= error.title ? 'is-invalid' : '' %>"
-                value="<%= value.title && value.title %>"
+                value="<%= post.title && post.title %>"
               />
               <% if(error.title){ %>
                 <div class="invalid-feedback">
@@ -29,7 +27,7 @@
                 id="tiny-mce-post-body"
                 class="form-control <%= error.body ? 'is-invalid' : '' %>"
               >
-<% value.body && value.body %> </textarea
+<%= post.body && post.body %> </textarea
               >
               <% if(error.body){ %>
               <div class="invalid-feedback">
@@ -45,8 +43,14 @@
                 id="tags"
                 class="form-control"
                 placeholder="tag1,teg2,teg3"
+                value="<%= post.tags.length > 0 ? post.tags.join(',') : '' %>"
               />
+
             </div>
+            <% if(post.thumbail) { %>
+           <label for="">Post Thumbail</label>
+           <img src="<%= post.thumbail %>" id="thumbail" alt="Post Thumbail" class="img-fluid mb-4">
+            <% } %> 
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text" id="">Upload</span>
@@ -66,8 +70,9 @@
             <input
             type="submit"
             class="btn btn-primary"
-            value="Create Post"
+            value="Update Post"
           />
+          <a href="/posts/delete/<%= post._id %> " class="btn btn-danger">Delete Post</a>
           </form>
           </div>
         </div>

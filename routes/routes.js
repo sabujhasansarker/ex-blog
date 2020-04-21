@@ -2,6 +2,8 @@ const authRoute = require("./authRoute");
 const deshboard = require("./deshBoardRoute");
 const uplode = require("./uploadeRoute");
 const post = require("./postRoute");
+const api = require("./apiRoutes");
+const explorer = require("./exploreRoute");
 
 const playground = require("./playground");
 
@@ -22,6 +24,14 @@ const routes = [
   {
     path: "/posts",
     hendler: post,
+  },
+  {
+    path: "/explorer",
+    hendler: explorer,
+  },
+  {
+    path: "/api",
+    hendler: api,
   },
   {
     path: "/playground",
