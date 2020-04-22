@@ -4,6 +4,7 @@ const uplode = require("./uploadeRoute");
 const post = require("./postRoute");
 const api = require("./apiRoutes");
 const explorer = require("./exploreRoute");
+const search = require("./searchRouter");
 
 const playground = require("./playground");
 
@@ -28,6 +29,10 @@ const routes = [
   {
     path: "/explorer",
     hendler: explorer,
+  },
+  {
+    path: "/search",
+    hendler: search,
   },
   {
     path: "/api",
